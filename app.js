@@ -1,11 +1,13 @@
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 const playBtn = document.querySelector("#playBtn");
+const clearBtn = document.querySelector("#clearBtn");
 
 let nbRows = 0;
 let nbCols = 0;
 let idReplay = 0;
 let visited = 0;
+let isPlaying = false;
 
 const grid = [];
 const gridReplay = [];
@@ -117,11 +119,19 @@ const startReplay = () => {
       const step = digStep[idReplay];
       gridReplay[step[0]][step[1]] = "floor";
       draw(gridReplay);
-      startReplay();
+      if (isPlaying) {
+        startReplay();
+      }
     }
-  }, 20);
+  }, 16);
 };
 
+const clearCanvas = () => {
+  ctx.fillStyle = WALL_COLOR;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+};
+
+//INIT
 const init = () => {
   nbRows = Math.floor(canvas.height / cellSize);
   nbCols = Math.floor(canvas.width / cellSize);
@@ -134,8 +144,8 @@ const init = () => {
     canvas.width -= cellSize;
   }
   fillTheGrid();
+  clearCanvas();
   explore(1, 1);
-
   document.addEventListener("keydown", (e) => {
     if (e.code === "Space") {
       if (idReplay < digStep.length - 1) {
@@ -150,8 +160,36 @@ const init = () => {
 
 init();
 
-playBtn.addEventListener("click", (e) => {
-  startReplay();
+playBtn.addEventListener("click", () => {
+  if (!isPlaying) {
+    startReplay();
+    isPlaying = true;
+    playBtn.textContent = "stop";
+    playBtn.classList.add("stop");
+    playBtn.classList.remove("play");
+  } else {
+    isPlaying = false;
+    playBtn.textContent = "play";
+    playBtn.classList.add("play");
+    playBtn.classList.remove("stop");
+  }
+});
+
+clearBtn.addEventListener("click", () => {
+  isPlaying = false;
+  grid.length = 0;
+  gridReplay.length = 0;
+  digStep.length = 0;
+  idReplay = 0;
+  visited = 0;
+
+  if (playBtn.textContent === "stop") {
+    playBtn.textContent = "play";
+    playBtn.classList.add("play");
+    playBtn.classList.remove("stop");
+  }
+
+  init();
 });
 
 // draw(grid);
