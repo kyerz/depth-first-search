@@ -24,8 +24,37 @@ const init = () => {
   fillTheGrid();
 };
 
+const getDirections = (posRow, posCol) => {
+  const dirsList = [];
+  if (posRow > 2) {
+    if (grid[(posRow - 2, posCol)] === "wall") {
+      dirsList.push("up");
+    }
+  }
+  if (posCol < nbCols - 2) {
+    if (grid[posRow][posCol + 2] === "wall") {
+      dirsList.push("right");
+    }
+  }
+  if (posRow < nbRows - 2) {
+    if (grid[posRow + 2][posCol] === "wall") {
+      dirsList.push("down");
+    }
+  }
+  if (posCol > 2) {
+    if (grid[posRow][posCol - 2]) {
+      dirsList.push("left");
+    }
+  }
+
+  return dirsList;
+};
+
 const explore = (posRow, posCol) => {
+  //digwall(posRow, posCol);
   while (visited < Math.floor(canvas.width * canvas.height) / 2) {
+    visited += 1;
+    console.log(getDirections(posRow, posCol));
     break;
   }
 };
