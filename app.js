@@ -4,6 +4,7 @@ let nbRows = 0;
 let nbCols = 0;
 const grid = [];
 const cellSize = 10;
+let visited = 0;
 
 const fillTheGrid = () => {
   nbRows = Math.floor(canvas.height / cellSize);
@@ -23,6 +24,12 @@ const init = () => {
   fillTheGrid();
 };
 
+const explore = (posRow, posCol) => {
+  while (visited < Math.floor(canvas.width * canvas.height) / 2) {
+    break;
+  }
+};
+
 const draw = () => {
   for (let l = 0; l < grid.length; l++) {
     for (let c = 0; c < grid[l].length; c++) {
@@ -35,4 +42,5 @@ const draw = () => {
 };
 
 init();
+explore(2, 2);
 draw();
