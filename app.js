@@ -85,15 +85,20 @@ const explore = (posRow, posCol) => {
 };
 
 const draw = (arr) => {
-  for (let l = 0; l < arr.length; l++) {
-    for (let c = 0; c < arr[l].length; c++) {
-      if (arr[l][c] === "wall") {
+  const step = digStep[idReplay];
+  for (let r = 0; r < arr.length; r++) {
+    for (let c = 0; c < arr[r].length; c++) {
+      if (arr[r][c] === "wall") {
         ctx.fillStyle = "black";
-        ctx.fillRect(c * cellSize, l * cellSize, cellSize, cellSize);
+        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
       }
-      if (arr[l][c] === "floor") {
+      if (arr[r][c] === "floor") {
         ctx.fillStyle = "white";
-        ctx.fillRect(c * cellSize, l * cellSize, cellSize, cellSize);
+        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+      }
+      if (step[0] === r && step[1] === c) {
+        ctx.fillStyle = "red";
+        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
       }
     }
   }
@@ -108,7 +113,7 @@ const startReplay = () => {
       draw(gridReplay);
       startReplay();
     }
-  }, 200);
+  }, 20);
 };
 
 const init = () => {
@@ -123,6 +128,7 @@ const init = () => {
     canvas.width -= cellSize;
   }
   fillTheGrid();
+  explore(1, 1);
 
   document.addEventListener("keydown", (e) => {
     if (e.code === "Space") {
@@ -137,6 +143,6 @@ const init = () => {
 };
 
 init();
-explore(1, 1);
+
 // draw(grid);
 startReplay();
