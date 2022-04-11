@@ -4,31 +4,22 @@ let nbRows = 0;
 let nbCols = 0;
 const grid = [];
 const gridReplay = [];
+const digStep = [];
+let idReplay = 0;
 const cellSize = 10;
 let visited = 0;
 
 const fillTheGrid = () => {
   for (let l = 0; l < nbRows; l++) {
     const row = [];
+    const replayRow = [];
     for (let c = 0; c < nbCols; c++) {
       row.push("wall");
+      replayRow.push("wall");
     }
     grid.push(row);
+    gridReplay.push(replayRow);
   }
-};
-
-const init = () => {
-  nbRows = Math.floor(canvas.height / cellSize);
-  nbCols = Math.floor(canvas.width / cellSize);
-  if (nbRows % 2 === 0) {
-    nbRows -= 1;
-    canvas.height -= cellSize;
-  }
-  if (nbCols % 2 === 0) {
-    nbCols -= 1;
-    canvas.width -= cellSize;
-  }
-  fillTheGrid();
 };
 
 const getDirections = (posRow, posCol) => {
@@ -59,7 +50,7 @@ const getDirections = (posRow, posCol) => {
 
 const digwall = (posRow, posCol) => {
   grid[posRow][posCol] = "floor";
-  gridReplay.push([posRow, posCol]);
+  digStep.push([posRow, posCol]);
 };
 
 const explore = (posRow, posCol) => {
@@ -93,14 +84,14 @@ const explore = (posRow, posCol) => {
   }
 };
 
-const draw = () => {
-  for (let l = 0; l < grid.length; l++) {
-    for (let c = 0; c < grid[l].length; c++) {
-      if (grid[l][c] === "wall") {
+const draw = (arr) => {
+  for (let l = 0; l < arr.length; l++) {
+    for (let c = 0; c < arr[l].length; c++) {
+      if (arr[l][c] === "wall") {
         ctx.fillStyle = "black";
         ctx.fillRect(c * cellSize, l * cellSize, cellSize, cellSize);
       }
-      if (grid[l][c] === "floor") {
+      if (arr[l][c] === "floor") {
         ctx.fillStyle = "white";
         ctx.fillRect(c * cellSize, l * cellSize, cellSize, cellSize);
       }
@@ -108,6 +99,32 @@ const draw = () => {
   }
 };
 
+const init = () => {
+  nbRows = Math.floor(canvas.height / cellSize);
+  nbCols = Math.floor(canvas.width / cellSize);
+  if (nbRows % 2 === 0) {
+    nbRows -= 1;
+    canvas.height -= cellSize;
+  }
+  if (nbCols % 2 === 0) {
+    nbCols -= 1;
+    canvas.width -= cellSize;
+  }
+  fillTheGrid();
+
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "Space") {
+      if (idReplay < digStep.length - 1) {
+        idReplay++;
+        const step = digStep[idReplay];
+        console.log("step[0] ", step[0], "step[1] ", step[1]);
+        gridReplay[step[0]][step[1]] = "floor";
+        draw(gridReplay);
+      }
+    }
+  });
+};
+
 init();
 explore(1, 1);
-draw();
+// draw(grid);
