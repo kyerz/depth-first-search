@@ -14,11 +14,9 @@ const fillTheGrid = () => {
     }
     grid.push(row);
   }
-  console.log(grid);
 };
 
 const init = () => {
-  console.log("init");
   nbRows = Math.floor(canvas.height / cellSize);
   nbCols = Math.floor(canvas.width / cellSize);
   if (nbRows % 2 === 0) {
@@ -71,7 +69,6 @@ const explore = (posRow, posCol) => {
 
     if (directions.length !== 0) {
       const index = Math.floor(Math.random() * directions.length);
-      console.log("path selected = ", directions[index]);
 
       if (directions[index] === "up") {
         digwall(posRow - 1, posCol);
