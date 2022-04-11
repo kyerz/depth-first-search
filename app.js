@@ -7,8 +7,6 @@ const cellSize = 10;
 let visited = 0;
 
 const fillTheGrid = () => {
-  nbRows = Math.floor(canvas.height / cellSize);
-  nbCols = Math.floor(canvas.width / cellSize);
   for (let l = 0; l < nbRows; l++) {
     const row = [];
     for (let c = 0; c < nbCols; c++) {
@@ -21,6 +19,16 @@ const fillTheGrid = () => {
 
 const init = () => {
   console.log("init");
+  nbRows = Math.floor(canvas.height / cellSize);
+  nbCols = Math.floor(canvas.width / cellSize);
+  if (nbRows % 2 === 0) {
+    nbRows -= 1;
+    canvas.height -= cellSize;
+  }
+  if (nbCols % 2 === 0) {
+    nbCols -= 1;
+    canvas.width -= cellSize;
+  }
   fillTheGrid();
 };
 
@@ -102,5 +110,5 @@ const draw = () => {
 };
 
 init();
-explore(2, 2);
+explore(1, 1);
 draw();
