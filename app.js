@@ -6,7 +6,7 @@ const grid = [];
 const gridReplay = [];
 const digStep = [];
 let idReplay = 0;
-const cellSize = 10;
+const cellSize = 8;
 let visited = 0;
 
 const fillTheGrid = () => {
@@ -99,6 +99,18 @@ const draw = (arr) => {
   }
 };
 
+const startReplay = () => {
+  setTimeout(() => {
+    if (idReplay < digStep.length - 1) {
+      idReplay++;
+      const step = digStep[idReplay];
+      gridReplay[step[0]][step[1]] = "floor";
+      draw(gridReplay);
+      startReplay();
+    }
+  }, 200);
+};
+
 const init = () => {
   nbRows = Math.floor(canvas.height / cellSize);
   nbCols = Math.floor(canvas.width / cellSize);
@@ -117,7 +129,6 @@ const init = () => {
       if (idReplay < digStep.length - 1) {
         idReplay++;
         const step = digStep[idReplay];
-        console.log("step[0] ", step[0], "step[1] ", step[1]);
         gridReplay[step[0]][step[1]] = "floor";
         draw(gridReplay);
       }
@@ -128,3 +139,4 @@ const init = () => {
 init();
 explore(1, 1);
 // draw(grid);
+startReplay();
