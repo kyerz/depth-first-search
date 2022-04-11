@@ -1,13 +1,19 @@
 const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
+const playBtn = document.querySelector("#playBtn");
+
 let nbRows = 0;
 let nbCols = 0;
+let idReplay = 0;
+let visited = 0;
+
 const grid = [];
 const gridReplay = [];
-const digStep = [];
-let idReplay = 0;
 const cellSize = 8;
-let visited = 0;
+const digStep = [];
+const WALL_COLOR = "#000";
+const FLOOR_COLOR = "#fff";
+const READING_HEAD = "red";
 
 const fillTheGrid = () => {
   for (let l = 0; l < nbRows; l++) {
@@ -89,15 +95,15 @@ const draw = (arr) => {
   for (let r = 0; r < arr.length; r++) {
     for (let c = 0; c < arr[r].length; c++) {
       if (arr[r][c] === "wall") {
-        ctx.fillStyle = "black";
+        ctx.fillStyle = WALL_COLOR;
         ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
       }
       if (arr[r][c] === "floor") {
-        ctx.fillStyle = "white";
+        ctx.fillStyle = FLOOR_COLOR;
         ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
       }
       if (step[0] === r && step[1] === c) {
-        ctx.fillStyle = "red";
+        ctx.fillStyle = READING_HEAD;
         ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
       }
     }
@@ -144,5 +150,8 @@ const init = () => {
 
 init();
 
+playBtn.addEventListener("click", (e) => {
+  startReplay();
+});
+
 // draw(grid);
-startReplay();
