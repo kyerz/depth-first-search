@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 let nbRows = 0;
 let nbCols = 0;
 const grid = [];
+const gridReplay = [];
 const cellSize = 10;
 let visited = 0;
 
@@ -58,6 +59,7 @@ const getDirections = (posRow, posCol) => {
 
 const digwall = (posRow, posCol) => {
   grid[posRow][posCol] = "floor";
+  gridReplay.push([posRow, posCol]);
 };
 
 const explore = (posRow, posCol) => {
