@@ -27,7 +27,7 @@ const init = () => {
 const getDirections = (posRow, posCol) => {
   const dirsList = [];
   if (posRow > 2) {
-    if (grid[(posRow - 2, posCol)] === "wall") {
+    if (grid[posRow - 2][posCol] === "wall") {
       dirsList.push("up");
     }
   }
@@ -42,7 +42,7 @@ const getDirections = (posRow, posCol) => {
     }
   }
   if (posCol > 2) {
-    if (grid[posRow][posCol - 2]) {
+    if (grid[posRow][posCol - 2] === "wall") {
       dirsList.push("left");
     }
   }
@@ -50,12 +50,39 @@ const getDirections = (posRow, posCol) => {
   return dirsList;
 };
 
+const digwall = (posRow, posCol) => {
+  grid[posRow][posCol] = "floor";
+};
+
 const explore = (posRow, posCol) => {
-  //digwall(posRow, posCol);
-  while (visited < Math.floor(canvas.width * canvas.height) / 2) {
-    visited += 1;
-    console.log(getDirections(posRow, posCol));
-    break;
+  digwall(posRow, posCol);
+  visited += 1;
+
+  while (visited < Math.floor((canvas.width / cellSize) * (canvas.height / cellSize)) / 2) {
+    const directions = getDirections(posRow, posCol);
+
+    if (directions.length !== 0) {
+      const index = Math.floor(Math.random() * directions.length);
+      console.log("path selected = ", directions[index]);
+
+      if (directions[index] === "up") {
+        digwall(posRow - 1, posCol);
+        explore(posRow - 2, posCol);
+      } else if (directions[index] === "right") {
+        digwall(posRow, posCol + 1);
+        explore(posRow, posCol + 2);
+      } else if (directions[index] === "down") {
+        digwall(posRow + 1, posCol);
+        explore(posRow + 2, posCol);
+      } else if (directions[index] === "left") {
+        digwall(posRow, posCol - 1);
+        explore(posRow, posCol - 2);
+      } else {
+        break;
+      }
+    } else {
+      break;
+    }
   }
 };
 
@@ -64,6 +91,10 @@ const draw = () => {
     for (let c = 0; c < grid[l].length; c++) {
       if (grid[l][c] === "wall") {
         ctx.fillStyle = "black";
+        ctx.fillRect(c * cellSize, l * cellSize, cellSize, cellSize);
+      }
+      if (grid[l][c] === "floor") {
+        ctx.fillStyle = "white";
         ctx.fillRect(c * cellSize, l * cellSize, cellSize, cellSize);
       }
     }
