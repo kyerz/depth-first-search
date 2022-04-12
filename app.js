@@ -4,12 +4,14 @@ const playBtn = document.querySelector("#playBtn");
 const clearBtn = document.querySelector("#clearBtn");
 const stepBtn = document.querySelector("#stepBtn");
 const randomizeBtn = document.querySelector("#randomizeBtn");
+const gridBtn = document.querySelector("#gridBtn");
 
 let nbRows = 0;
 let nbCols = 0;
 let idReplay = 0;
 let visited = 0;
 let isPlaying = false;
+let activeStroke = false;
 
 const grid = [];
 const gridReplay = [];
@@ -101,8 +103,10 @@ const draw = (arr) => {
       if (arr[r][c] === "wall") {
         ctx.fillStyle = WALL_COLOR;
         ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
-        ctx.strokeStyle = "#FF0000";
-        ctx.strokeRect(c * cellSize, r * cellSize, cellSize, cellSize);
+        if (activeStroke) {
+          ctx.strokeStyle = "#FF0000";
+          ctx.strokeRect(c * cellSize, r * cellSize, cellSize, cellSize);
+        }
       }
       if (arr[r][c] === "floor") {
         ctx.fillStyle = FLOOR_COLOR;
@@ -233,4 +237,29 @@ randomizeBtn.addEventListener("click", () => {
   }
   init();
   draw(grid);
+});
+
+//GRID BTN
+gridBtn.addEventListener("click", (e) => {
+  if (gridBtn.children[0].textContent === "off") {
+    gridBtn.children[0].textContent = "on";
+    activeStroke = false;
+    if (!isPlaying) {
+      if (idReplay === 0) {
+        draw(grid);
+      } else {
+        draw(gridReplay);
+      }
+    }
+  } else {
+    gridBtn.children[0].textContent = "off";
+    activeStroke = true;
+    if (!isPlaying) {
+      if (idReplay === 0) {
+        draw(grid);
+      } else {
+        draw(gridReplay);
+      }
+    }
+  }
 });
