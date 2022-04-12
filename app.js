@@ -12,6 +12,7 @@ let idReplay = 0;
 let visited = 0;
 let isPlaying = false;
 let activeStroke = false;
+let checkTheGridUsed;
 
 const grid = [];
 const gridReplay = [];
@@ -97,24 +98,35 @@ const explore = (posRow, posCol) => {
 };
 
 const draw = (arr) => {
+  checkTheGridUsed = arr;
+
   const step = digStep[idReplay];
-  for (let r = 0; r < arr.length; r++) {
-    for (let c = 0; c < arr[r].length; c++) {
-      if (arr[r][c] === "wall") {
-        ctx.fillStyle = WALL_COLOR;
-        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
-        if (activeStroke) {
-          ctx.strokeStyle = "#FF0000";
-          ctx.strokeRect(c * cellSize, r * cellSize, cellSize, cellSize);
+  if (checkTheGridUsed !== undefined) {
+    for (let r = 0; r < arr.length; r++) {
+      for (let c = 0; c < arr[r].length; c++) {
+        if (arr[r][c] === "wall") {
+          ctx.fillStyle = WALL_COLOR;
+          ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+          if (activeStroke) {
+            ctx.strokeStyle = "#FF0000";
+            ctx.strokeRect(c * cellSize, r * cellSize, cellSize, cellSize);
+          }
+        }
+        if (arr[r][c] === "floor") {
+          ctx.fillStyle = FLOOR_COLOR;
+          ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+        }
+        if (step[0] === r && step[1] === c) {
+          ctx.fillStyle = READING_HEAD;
+          ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
         }
       }
-      if (arr[r][c] === "floor") {
-        ctx.fillStyle = FLOOR_COLOR;
-        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
-      }
-      if (step[0] === r && step[1] === c) {
-        ctx.fillStyle = READING_HEAD;
-        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+    }
+  } else {
+    for (let r = 0; r < grid.length; r++) {
+      for (let c = 0; c < grid[r].length; c++) {
+        ctx.strokeStyle = "#FF0000";
+        ctx.strokeRect(c * cellSize, r * cellSize, cellSize, cellSize);
       }
     }
   }
@@ -141,6 +153,9 @@ const startReplay = () => {
 const clearCanvas = () => {
   ctx.fillStyle = WALL_COLOR;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if (activeStroke) {
+    draw();
+  }
 };
 
 const handleTogglePlayBtn = (text) => {
@@ -226,6 +241,7 @@ stepBtn.addEventListener("click", (e) => {
   handleTogglePlayBtn("stop");
   isPlaying = false;
   handleNextStep();
+  checkTheGridUsed = gridReplay;
 });
 
 //RANDOMIZE BTN
@@ -243,23 +259,22 @@ randomizeBtn.addEventListener("click", () => {
 gridBtn.addEventListener("click", (e) => {
   if (gridBtn.children[0].textContent === "off") {
     gridBtn.children[0].textContent = "on";
-    activeStroke = false;
-    if (!isPlaying) {
-      if (idReplay === 0) {
-        draw(grid);
-      } else {
-        draw(gridReplay);
-      }
-    }
+    activeStroke = true;
+    draw(checkTheGridUsed);
   } else {
     gridBtn.children[0].textContent = "off";
-    activeStroke = true;
-    if (!isPlaying) {
-      if (idReplay === 0) {
-        draw(grid);
-      } else {
-        draw(gridReplay);
-      }
+    activeStroke = false;
+    if (checkTheGridUsed === undefined) {
+      console.log("undefined");
+      clearCanvas();
+    }
+    if (checkTheGridUsed === grid) {
+      console.log("grid");
+      draw(grid);
+    }
+    if (checkTheGridUsed === gridReplay) {
+      console.log("gridReplay");
+      draw(gridReplay);
     }
   }
 });
