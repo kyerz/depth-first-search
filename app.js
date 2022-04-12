@@ -15,8 +15,8 @@ const grid = [];
 const gridReplay = [];
 const cellSize = 8;
 const digStep = [];
-const WALL_COLOR = "#000";
-const FLOOR_COLOR = "#fff";
+const WALL_COLOR = "#2C4251";
+const FLOOR_COLOR = "#D16666";
 const READING_HEAD = "red";
 
 const fillTheGrid = () => {
@@ -101,6 +101,8 @@ const draw = (arr) => {
       if (arr[r][c] === "wall") {
         ctx.fillStyle = WALL_COLOR;
         ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+        ctx.strokeStyle = "#FF0000";
+        ctx.strokeRect(c * cellSize, r * cellSize, cellSize, cellSize);
       }
       if (arr[r][c] === "floor") {
         ctx.fillStyle = FLOOR_COLOR;
@@ -157,6 +159,8 @@ const handleTogglePlayBtn = (text) => {
     }
   } else {
     if (playBtn.textContent === "stop") {
+      randomizeBtn.disabled = false;
+
       playBtn.textContent = "play";
       playBtn.classList.add("play");
       playBtn.classList.remove("stop");
