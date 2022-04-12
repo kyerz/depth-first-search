@@ -16,10 +16,11 @@ let checkTheGridUsed;
 
 const grid = [];
 const gridReplay = [];
-const cellSize = 8;
+const cellSize = 10;
 const digStep = [];
-const WALL_COLOR = "#2C4251";
-const FLOOR_COLOR = "#D16666";
+const WALL_COLOR = "#041D37";
+const FLOOR_COLOR = "#738CA6";
+const COLOR_GRID = "#4A6B8A";
 const READING_HEAD = "red";
 
 const fillTheGrid = () => {
@@ -108,7 +109,7 @@ const draw = (arr) => {
           ctx.fillStyle = WALL_COLOR;
           ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
           if (activeStroke) {
-            ctx.strokeStyle = "#FF0000";
+            ctx.strokeStyle = COLOR_GRID;
             ctx.strokeRect(c * cellSize, r * cellSize, cellSize, cellSize);
           }
         }
@@ -125,7 +126,7 @@ const draw = (arr) => {
   } else {
     for (let r = 0; r < grid.length; r++) {
       for (let c = 0; c < grid[r].length; c++) {
-        ctx.strokeStyle = "#FF0000";
+        ctx.strokeStyle = COLOR_GRID;
         ctx.strokeRect(c * cellSize, r * cellSize, cellSize, cellSize);
       }
     }
