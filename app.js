@@ -266,15 +266,12 @@ gridBtn.addEventListener("click", (e) => {
     gridBtn.children[0].textContent = "off";
     activeStroke = false;
     if (checkTheGridUsed === undefined) {
-      console.log("undefined");
       clearCanvas();
     }
     if (checkTheGridUsed === grid) {
-      console.log("grid");
       draw(grid);
     }
     if (checkTheGridUsed === gridReplay) {
-      console.log("gridReplay");
       draw(gridReplay);
     }
   }
