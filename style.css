@@ -59,6 +59,9 @@ body {
   background-color: #ff1100bd;
 }
 
+.step {
+}
+
 @media screen and (max-width: 800px) {
   .canvas {
     width: 100%;

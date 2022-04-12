@@ -2,6 +2,7 @@ const canvas = document.querySelector("#canvas");
 const ctx = canvas.getContext("2d");
 const playBtn = document.querySelector("#playBtn");
 const clearBtn = document.querySelector("#clearBtn");
+const stepBtn = document.querySelector("#stepBtn");
 
 let nbRows = 0;
 let nbCols = 0;
@@ -112,23 +113,50 @@ const draw = (arr) => {
   }
 };
 
+const handleNextStep = () => {
+  if (idReplay < digStep.length - 1) {
+    idReplay++;
+    const step = digStep[idReplay];
+    gridReplay[step[0]][step[1]] = "floor";
+    draw(gridReplay);
+    if (isPlaying) {
+      startReplay();
+    }
+  }
+};
+
 const startReplay = () => {
   setTimeout(() => {
-    if (idReplay < digStep.length - 1) {
-      idReplay++;
-      const step = digStep[idReplay];
-      gridReplay[step[0]][step[1]] = "floor";
-      draw(gridReplay);
-      if (isPlaying) {
-        startReplay();
-      }
-    }
+    handleNextStep();
   }, 16);
 };
 
 const clearCanvas = () => {
   ctx.fillStyle = WALL_COLOR;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+};
+
+const handleTogglePlayBtn = (text) => {
+  if (!text) {
+    if (!isPlaying) {
+      startReplay();
+      isPlaying = true;
+      playBtn.textContent = "stop";
+      playBtn.classList.add("stop");
+      playBtn.classList.remove("play");
+    } else {
+      isPlaying = false;
+      playBtn.textContent = "play";
+      playBtn.classList.add("play");
+      playBtn.classList.remove("stop");
+    }
+  } else {
+    if (playBtn.textContent === "stop") {
+      playBtn.textContent = "play";
+      playBtn.classList.add("play");
+      playBtn.classList.remove("stop");
+    }
+  }
 };
 
 //INIT
@@ -148,34 +176,24 @@ const init = () => {
   explore(1, 1);
   document.addEventListener("keydown", (e) => {
     if (e.code === "Space") {
-      if (idReplay < digStep.length - 1) {
-        idReplay++;
-        const step = digStep[idReplay];
-        gridReplay[step[0]][step[1]] = "floor";
-        draw(gridReplay);
-      }
+      handleTogglePlayBtn("stop");
+      isPlaying = false;
+      handleNextStep();
     }
   });
 };
 
 init();
 
-playBtn.addEventListener("click", () => {
-  if (!isPlaying) {
-    startReplay();
-    isPlaying = true;
-    playBtn.textContent = "stop";
-    playBtn.classList.add("stop");
-    playBtn.classList.remove("play");
-  } else {
-    isPlaying = false;
-    playBtn.textContent = "play";
-    playBtn.classList.add("play");
-    playBtn.classList.remove("stop");
-  }
+//PLAY BTN
+playBtn.addEventListener("click", (e) => {
+  handleTogglePlayBtn();
+  //remove focus from space key
+  e.target.blur();
 });
 
-clearBtn.addEventListener("click", () => {
+//CLEAR BTN
+clearBtn.addEventListener("click", (e) => {
   isPlaying = false;
   grid.length = 0;
   gridReplay.length = 0;
@@ -183,13 +201,18 @@ clearBtn.addEventListener("click", () => {
   idReplay = 0;
   visited = 0;
 
-  if (playBtn.textContent === "stop") {
-    playBtn.textContent = "play";
-    playBtn.classList.add("play");
-    playBtn.classList.remove("stop");
-  }
+  handleTogglePlayBtn("stop");
 
   init();
+  //remove focus from space key
+  e.target.blur();
+});
+
+//STEP BTN
+stepBtn.addEventListener("click", (e) => {
+  handleTogglePlayBtn("stop");
+  isPlaying = false;
+  handleNextStep();
 });
 
 // draw(grid);
