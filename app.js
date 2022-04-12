@@ -24,12 +24,22 @@ const COLOR_GRID = "#4A6B8A";
 const READING_HEAD = "red";
 
 const fillTheGrid = () => {
-  for (let l = 0; l < nbRows; l++) {
+  for (let r = 0; r < nbRows; r++) {
     const row = [];
     const replayRow = [];
     for (let c = 0; c < nbCols; c++) {
-      row.push("wall");
-      replayRow.push("wall");
+      //add entry
+      if ((r === 0 && c === 1) || (r === 1 && c === 1)) {
+        row.push("floor");
+        replayRow.push("floor");
+        //add exit
+      } else if (r === nbRows - 2 && c === nbCols - 1) {
+        row.push("floor");
+        replayRow.push("floor");
+      } else {
+        row.push("wall");
+        replayRow.push("wall");
+      }
     }
     grid.push(row);
     gridReplay.push(replayRow);
@@ -56,14 +66,6 @@ const getDirections = (posRow, posCol) => {
   if (posCol > 2) {
     if (grid[posRow][posCol - 2] === "wall") {
       dirsList.push("left");
-    }
-  }
-  if (dirsList.length === 0) {
-    //Added entry
-    if (grid[0][1] === "wall") grid[0][1] = "floor";
-    //Added exit
-    if (grid[grid.length - 1][grid.length - 1] === "wall") {
-      grid[grid.length - 2][grid[grid.length - 1].length - 1] = "floor";
     }
   }
 
