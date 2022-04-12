@@ -92,9 +92,9 @@ body {
 }
 
 /*MEDIA QUERIES*/
-@media (max-width: 1024px) and (max-height: 600px) {
+@media (max-width: 1366px) and (max-height: 710px) {
   .canvas {
-    max-height: 70%;
+    max-width: 50%;
   }
 }
 
