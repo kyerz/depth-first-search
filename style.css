@@ -104,3 +104,10 @@ body {
     margin: 10px 0;
   }
 }
+
+@media screen and (max-width: 500px) {
+  .container {
+    height: auto;
+    margin-top: 10px;
+  }
+}
