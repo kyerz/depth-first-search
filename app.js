@@ -58,6 +58,14 @@ const getDirections = (posRow, posCol) => {
       dirsList.push("left");
     }
   }
+  if (dirsList.length === 0) {
+    //Added entry
+    if (grid[0][1] === "wall") grid[0][1] = "floor";
+    //Added exit
+    if (grid[grid.length - 1][grid.length - 1] === "wall") {
+      grid[grid.length - 2][grid[grid.length - 1].length - 1] = "floor";
+    }
+  }
 
   return dirsList;
 };
