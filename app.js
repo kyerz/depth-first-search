@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 const playBtn = document.querySelector("#playBtn");
 const clearBtn = document.querySelector("#clearBtn");
 const stepBtn = document.querySelector("#stepBtn");
+const randomizeBtn = document.querySelector("#randomizeBtn");
 
 let nbRows = 0;
 let nbCols = 0;
@@ -141,11 +142,15 @@ const handleTogglePlayBtn = (text) => {
     if (!isPlaying) {
       startReplay();
       isPlaying = true;
+      randomizeBtn.disabled = true;
+
       playBtn.textContent = "stop";
       playBtn.classList.add("stop");
       playBtn.classList.remove("play");
     } else {
       isPlaying = false;
+      randomizeBtn.disabled = false;
+
       playBtn.textContent = "play";
       playBtn.classList.add("play");
       playBtn.classList.remove("stop");
@@ -161,6 +166,13 @@ const handleTogglePlayBtn = (text) => {
 
 //INIT
 const init = () => {
+  isPlaying = false;
+  grid.length = 0;
+  gridReplay.length = 0;
+  digStep.length = 0;
+  idReplay = 0;
+  visited = 0;
+
   nbRows = Math.floor(canvas.height / cellSize);
   nbCols = Math.floor(canvas.width / cellSize);
   if (nbRows % 2 === 0) {
@@ -194,13 +206,6 @@ playBtn.addEventListener("click", (e) => {
 
 //CLEAR BTN
 clearBtn.addEventListener("click", (e) => {
-  isPlaying = false;
-  grid.length = 0;
-  gridReplay.length = 0;
-  digStep.length = 0;
-  idReplay = 0;
-  visited = 0;
-
   handleTogglePlayBtn("stop");
 
   init();
@@ -215,4 +220,13 @@ stepBtn.addEventListener("click", (e) => {
   handleNextStep();
 });
 
-// draw(grid);
+//RANDOMIZE BTN
+randomizeBtn.addEventListener("click", () => {
+  if (isPlaying) {
+    randomizeBtn.disabled = true;
+  } else {
+    randomizeBtn.disabled = false;
+  }
+  init();
+  draw(grid);
+});
