@@ -86,13 +86,21 @@ body {
 }
 
 .hint {
+  font-size: 1.2rem;
   text-align: center;
   color: #f5f5f5;
 }
 
+/*MEDIA QUERIES*/
+@media (max-width: 1024px) and (max-height: 600px) {
+  .canvas {
+    max-height: 70%;
+  }
+}
+
 @media screen and (max-width: 820px) {
   .canvas {
-    width: 95%;
+    width: 90%;
   }
   .controls-ctn {
     width: 130px;
@@ -101,7 +109,13 @@ body {
     flex-direction: column;
   }
   .btn {
-    margin: 10px 0;
+    margin: 5px 0;
+  }
+}
+
+@media (max-width: 540px) and (max-height: 720px) {
+  .canvas {
+    max-width: 80%;
   }
 }
 
