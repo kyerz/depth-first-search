@@ -175,6 +175,7 @@ const handleTogglePlayBtn = (text) => {
       startReplay();
       isPlaying = true;
       randomizeBtn.disabled = true;
+      randomizeBtn.classList.add("disable");
 
       playBtn.textContent = "stop";
       playBtn.classList.add("stop");
@@ -186,10 +187,12 @@ const handleTogglePlayBtn = (text) => {
       playBtn.textContent = "play";
       playBtn.classList.add("play");
       playBtn.classList.remove("stop");
+      randomizeBtn.classList.remove("disable");
     }
   } else {
     if (playBtn.textContent === "stop") {
       randomizeBtn.disabled = false;
+      randomizeBtn.classList.remove("disable");
 
       playBtn.textContent = "play";
       playBtn.classList.add("play");
