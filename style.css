@@ -1,10 +1,10 @@
 @font-face {
   font-family: lato-light;
-  src: url("./assets/polices/Lato-Light.ttf");
+  src: url('./assets/polices/Lato-Light.ttf');
 }
 @font-face {
   font-family: lato-bold;
-  src: url("./assets/polices/Lato-Light.ttf");
+  src: url('./assets/polices/Lato-Light.ttf');
 }
 
 *,
@@ -19,7 +19,7 @@ body {
   height: 100vh;
   background: rgb(2, 0, 36);
   background: linear-gradient(0deg, rgba(2, 0, 36, 1) 0%, rgba(43, 76, 111, 1) 44%);
-  font-family: "lato-light", sans-serif;
+  font-family: 'lato-light', sans-serif;
 }
 
 .container {
@@ -48,7 +48,7 @@ body {
   text-transform: uppercase;
   background: transparent;
   border-radius: 50px;
-  font-family: "lato-bold", sans-serif;
+  font-family: 'lato-bold', sans-serif;
   color: #f5f5f5;
   font-weight: 600;
   cursor: pointer;
@@ -119,12 +119,6 @@ body {
   60% {
     transform: translate3d(4px, 0, 0);
   }
-}
-
-.hint {
-  font-size: 1.2rem;
-  text-align: center;
-  color: #f5f5f5;
 }
 
 /*MEDIA QUERIES*/
