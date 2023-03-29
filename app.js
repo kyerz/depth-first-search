@@ -72,13 +72,13 @@ const getDirections = (posRow, posCol) => {
   return dirsList;
 };
 
-const digwall = (posRow, posCol) => {
+const digWall = (posRow, posCol) => {
   grid[posRow][posCol] = "floor";
   digStep.push([posRow, posCol]);
 };
 
 const explore = (posRow, posCol) => {
-  digwall(posRow, posCol);
+  digWall(posRow, posCol);
   visited += 1;
 
   while (visited < Math.floor((canvas.width / cellSize) * (canvas.height / cellSize)) / 2) {
@@ -88,16 +88,16 @@ const explore = (posRow, posCol) => {
       const index = Math.floor(Math.random() * directions.length);
 
       if (directions[index] === "up") {
-        digwall(posRow - 1, posCol);
+        digWall(posRow - 1, posCol);
         explore(posRow - 2, posCol);
       } else if (directions[index] === "right") {
-        digwall(posRow, posCol + 1);
+        digWall(posRow, posCol + 1);
         explore(posRow, posCol + 2);
       } else if (directions[index] === "down") {
-        digwall(posRow + 1, posCol);
+        digWall(posRow + 1, posCol);
         explore(posRow + 2, posCol);
       } else if (directions[index] === "left") {
-        digwall(posRow, posCol - 1);
+        digWall(posRow, posCol - 1);
         explore(posRow, posCol - 2);
       } else {
         break;
@@ -251,7 +251,7 @@ clearBtn.addEventListener("click", (e) => {
 });
 
 //STEP BTN
-stepBtn.addEventListener("click", (e) => {
+stepBtn.addEventListener("click", () => {
   handleTogglePlayBtn("stop");
   isPlaying = false;
   handleNextStep();
@@ -260,17 +260,13 @@ stepBtn.addEventListener("click", (e) => {
 
 //RANDOMIZE BTN
 randomizeBtn.addEventListener("click", () => {
-  if (isPlaying) {
-    randomizeBtn.disabled = true;
-  } else {
-    randomizeBtn.disabled = false;
-  }
+  randomizeBtn.disabled = isPlaying;
   init();
   draw(grid);
 });
 
 //GRID BTN
-gridBtn.addEventListener("click", (e) => {
+gridBtn.addEventListener("click", () => {
   if (gridBtn.children[0].textContent === "off") {
     gridBtn.children[0].textContent = "on";
     activeStroke = true;
